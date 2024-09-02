@@ -17,5 +17,5 @@ RUN pip install .
 ENV PYTHONUNBUFFERED=1
 
 # Specify the default command to run the service
-#CMD ["python", "artiq_iseg_hv_psu/aqctl_artiq_iseg_hv_psu.py", "--device_ip", "10.88.1.194"]
-CMD ["pytest", "artiq_iseg_hv_psu/test_artiq_iseg_hv_psu.py"]
+CMD ["python", "artiq_iseg_hv_psu/aqctl_artiq_iseg_hv_psu.py", "--simulation"]
+#CMD ["pytest", "artiq_iseg_hv_psu/test_artiq_iseg_hv_psu.py"]
