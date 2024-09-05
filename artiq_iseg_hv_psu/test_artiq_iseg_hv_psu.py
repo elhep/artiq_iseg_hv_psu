@@ -9,14 +9,18 @@ class GenericTdcTest:
         channel = 3
         self.artiq_iseg_hv_psu.set_channel_voltage(channel, voltage)
         self.assertEqual(voltage, self.artiq_iseg_hv_psu.get_channel_voltage(channel))
-        self.assertAlmostEqual(voltage, self.artiq_iseg_hv_psu.get_channel_voltage(channel), delta = 0.5)
+        self.assertAlmostEqual(
+            voltage, self.artiq_iseg_hv_psu.get_channel_voltage(channel), delta=0.5
+        )
 
     def test_set_channel_current(self):
         current = 3e6
         channel = 6
         self.artiq_iseg_hv_psu.set_channel_current(channel, current)
         self.assertEqual(current, self.artiq_iseg_hv_psu.get_channel_current(channel))
-        self.assertAlmostEqual(current, self.artiq_iseg_hv_psu.get_channel_current(channel), delta = 0.5)
+        self.assertAlmostEqual(
+            current, self.artiq_iseg_hv_psu.get_channel_current(channel), delta=0.5
+        )
 
     def test_set_channel_on(self):
         channel_on = True

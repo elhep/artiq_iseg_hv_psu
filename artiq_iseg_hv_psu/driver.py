@@ -89,7 +89,7 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
     async def get_channel_on(self, channel):
         channel_status = self.send_command(f":READ:CHAN:STAT? (@{channel})")
         channel_on = bool(int(channel_status) & (1 << 3))
-        return channel_on 
+        return channel_on
 
     async def reset(self):
         return self.send_command("*RST")
@@ -120,28 +120,37 @@ class ArtiqIsegHvPsuSim(ArtiqIsegHvPsuInterface):
             logging.warning("Simulated: Turning channel {channel } OFF")
 
     async def get_channel_voltage(self, channel):
-        logging.warning(f"Simulated: Channel {channel} voltage redout:"
-                        f"{self.channel_voltage[channel]}")
+        logging.warning(
+            f"Simulated: Channel {channel} voltage redout:"
+            f"{self.channel_voltage[channel]}"
+        )
         return self.channel_voltage[channel]
 
     async def get_channel_current(self, channel):
-        logging.warning(f"Simulated: Channel {channel} current redout: "
-                        f"{self.channel_current[channel]}")
+        logging.warning(
+            f"Simulated: Channel {channel} current redout: "
+            f"{self.channel_current[channel]}"
+        )
         return self.channel_current[channel]
 
     async def get_channel_voltage_measured(self, channel):
-        logging.warning(f"Simulated: Channel {channel} measured voltage redout: "
-                        f"{self.channel_voltage[channel] + random.random() - 0.5}")
+        logging.warning(
+            f"Simulated: Channel {channel} measured voltage redout: "
+            f"{self.channel_voltage[channel] + random.random() - 0.5}"
+        )
         return self.channel_voltage[channel]
 
     async def get_channel_current_measured(self, channel):
-        logging.warning(f"Simulated: Channel {channel} measured current redout: "
-                        f"{self.channel_current[channel] + random.random() - 0.5}")
+        logging.warning(
+            f"Simulated: Channel {channel} measured current redout: "
+            f"{self.channel_current[channel] + random.random() - 0.5}"
+        )
         return self.channel_current[channel]
 
     async def get_channel_on(self, channel):
-        logging.warning(f"Simulated: Channel {channel} state redout: "
-                        f"{self.channel_on[channel]}")
+        logging.warning(
+            f"Simulated: Channel {channel} state redout: " f"{self.channel_on[channel]}"
+        )
         return self.channel_on[channel]
 
     async def reset(self):

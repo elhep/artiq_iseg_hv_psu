@@ -6,7 +6,8 @@ import sys
 
 from sipyco import common_args
 from sipyco.pc_rpc import simple_server_loop
-from artiq_iseg_hv_psu.driver import ArtiqIsegHvPsu, ArtiqIsegHvPsuSim 
+
+from artiq_iseg_hv_psu.driver import ArtiqIsegHvPsu, ArtiqIsegHvPsuSim
 
 
 def get_argparser():
