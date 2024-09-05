@@ -41,6 +41,10 @@ class ArtiqIsegHvPsuInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
+    async def get_temperature(self):
+        pass
+
+    @abc.abstractmethod
     async def reset(self):
         pass
 
@@ -91,6 +95,10 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
         channel_on = bool(int(channel_status) & (1 << 3))
         return channel_on
 
+    async def get_temperature(self):
+        temperature = self.send_command(":READ:MOD:TEMP?")
+        return temperature
+
     async def reset(self):
         return self.send_command("*RST")
 
@@ -103,6 +111,7 @@ class ArtiqIsegHvPsuSim(ArtiqIsegHvPsuInterface):
         self.channel_voltage = 8 * [None]
         self.channel_current = 8 * [None]
         self.channel_on = 8 * [None]
+        self.temperature = 42 + 10 * random.random()
 
     async def set_channel_voltage(self, channel, voltage):
         self.channel_voltage[channel] = voltage
@@ -152,6 +161,10 @@ class ArtiqIsegHvPsuSim(ArtiqIsegHvPsuInterface):
             f"Simulated: Channel {channel} state redout: " f"{self.channel_on[channel]}"
         )
         return self.channel_on[channel]
+
+    async def get_temperature(self):
+        logging.warning(f"Simulated: Temperature redout: " f"{self.temperature}")
+        return self.temperature
 
     async def reset(self):
         self.channel_voltage = 8 * [None]
