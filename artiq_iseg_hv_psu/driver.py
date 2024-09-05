@@ -3,6 +3,7 @@
 import abc
 import asyncio
 import logging
+import random
 import socket
 
 
@@ -12,7 +13,23 @@ class ArtiqIsegHvPsuInterface(abc.ABC):
         pass
 
     @abc.abstractmethod
+    async def set_channel_current(self, channel, current):
+        pass
+
+    @abc.abstractmethod
     async def get_channel_voltage(self, channel):
+        pass
+
+    @abc.abstractmethod
+    async def get_channel_current(self, channel):
+        pass
+
+    @abc.abstractmethod
+    async def get_channel_voltage_measured(self, channel):
+        pass
+
+    @abc.abstractmethod
+    async def get_channel_current_measured(self, channel):
         pass
 
     @abc.abstractmethod
@@ -48,6 +65,9 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
     async def set_channel_voltage(self, channel, voltage):
         self.send_command(f":VOLT {voltage},(@{channel})")
 
+    async def set_channel_current(self, channel, current):
+        self.send_command(f":CURR {current},(@{channel})")
+
     async def set_channel_on(self, channel, channel_on):
         if channel_on:
             self.send_command(f":VOLT ON,(@{channel})")
@@ -56,6 +76,15 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
 
     async def get_channel_voltage(self, channel):
         return self.send_command(f":READ:VOLT?(@{channel})")
+
+    async def get_channel_current(self, channel):
+        return self.send_command(f":READ:CURR?(@{channel})")
+
+    async def get_channel_voltage_measured(self, channel):
+        return self.send_command(f":MEAS:VOLT?(@{channel})")
+
+    async def get_channel_current_measured(self, channel):
+        return self.send_command(f":MEAS:CURR?(@{channel})")
 
     async def get_channel_on(self, channel):
         channel_status = self.send_command(f":READ:CHAN:STAT? (@{channel})")
@@ -72,11 +101,16 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
 class ArtiqIsegHvPsuSim(ArtiqIsegHvPsuInterface):
     def __init__(self):
         self.channel_voltage = 8 * [None]
+        self.channel_current = 8 * [None]
         self.channel_on = 8 * [None]
 
     async def set_channel_voltage(self, channel, voltage):
-        self.channel_voltage[channel] = voltage 
+        self.channel_voltage[channel] = voltage
         logging.warning(f"Simulated: Setting channel {channel} voltage to {voltage}")
+
+    async def set_channel_current(self, channel, current):
+        self.channel_current[channel] = current
+        logging.warning(f"Simulated: Setting channel {channel} current to {current}")
 
     async def set_channel_on(self, channel, channel_on):
         self.channel_on[channel] = channel_on
@@ -86,11 +120,28 @@ class ArtiqIsegHvPsuSim(ArtiqIsegHvPsuInterface):
             logging.warning("Simulated: Turning channel {channel } OFF")
 
     async def get_channel_voltage(self, channel):
-        logging.warning(f"Simulated: Channel {channel} voltage redout: {self.channel_voltage[channel]}")
+        logging.warning(f"Simulated: Channel {channel} voltage redout:"
+                        f"{self.channel_voltage[channel]}")
         return self.channel_voltage[channel]
 
+    async def get_channel_current(self, channel):
+        logging.warning(f"Simulated: Channel {channel} current redout: "
+                        f"{self.channel_current[channel]}")
+        return self.channel_current[channel]
+
+    async def get_channel_voltage_measured(self, channel):
+        logging.warning(f"Simulated: Channel {channel} measured voltage redout: "
+                        f"{self.channel_voltage[channel] + random.random() - 0.5}")
+        return self.channel_voltage[channel]
+
+    async def get_channel_current_measured(self, channel):
+        logging.warning(f"Simulated: Channel {channel} measured current redout: "
+                        f"{self.channel_current[channel] + random.random() - 0.5}")
+        return self.channel_current[channel]
+
     async def get_channel_on(self, channel):
-        logging.warning(f"Simulated: Channel {channel} state redout: {self.channel_on[channel]}")
+        logging.warning(f"Simulated: Channel {channel} state redout: "
+                        f"{self.channel_on[channel]}")
         return self.channel_on[channel]
 
     async def reset(self):
