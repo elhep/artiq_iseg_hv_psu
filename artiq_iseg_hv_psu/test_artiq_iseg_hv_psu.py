@@ -3,7 +3,7 @@ import sys
 from sipyco.test.generic_rpc import GenericRPCCase
 
 
-class GenericTdcTest:
+class GenericIsegHvPsuTest:
     def test_set_channel_voltage(self):
         voltage = 5e6
         channel = 3
@@ -29,7 +29,7 @@ class GenericTdcTest:
         self.assertEqual(channel_on, self.artiq_iseg_hv_psu.get_channel_on(channel))
 
 
-class TestTdcSim(GenericRPCCase, GenericTdcTest):
+class TestIsegHvPsuSim(GenericRPCCase, GenericIsegHvPsuTest):
     def setUp(self):
         GenericRPCCase.setUp(self)
         command = (
