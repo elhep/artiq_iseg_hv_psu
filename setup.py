@@ -9,7 +9,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "artiq_iseg_hv_psu = artiq_iseg_hv_psu.artiq_iseg_hv_psu:main",
+            "aqctl_artiq_iseg_hv_psu = artiq_iseg_hv_psu.aqctl_artiq_iseg_hv_psu:main",
         ],
     },
 )
