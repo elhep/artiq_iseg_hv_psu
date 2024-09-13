@@ -124,9 +124,9 @@ class ArtiqIsegHvPsuSim(ArtiqIsegHvPsuInterface):
     async def set_channel_on(self, channel, channel_on):
         self.channel_on[channel] = channel_on
         if channel_on:
-            logging.warning("Simulated: Turning channel {channel} ON")
+            logging.warning(f"Simulated: Turning channel {channel} ON")
         else:
-            logging.warning("Simulated: Turning channel {channel } OFF")
+            logging.warning(f"Simulated: Turning channel {channel } OFF")
 
     async def get_channel_voltage(self, channel):
         logging.warning(
