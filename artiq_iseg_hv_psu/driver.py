@@ -158,12 +158,12 @@ class ArtiqIsegHvPsuSim(ArtiqIsegHvPsuInterface):
 
     async def get_channel_on(self, channel):
         logging.warning(
-            f"Simulated: Channel {channel} state redout: " f"{self.channel_on[channel]}"
+            f"Simulated: Channel {channel} state redout: {self.channel_on[channel]}"
         )
         return self.channel_on[channel]
 
     async def get_temperature(self):
-        logging.warning(f"Simulated: Temperature redout: " f"{self.temperature}")
+        logging.warning(f"Simulated: Temperature redout: {self.temperature}")
         return self.temperature
 
     async def reset(self):
