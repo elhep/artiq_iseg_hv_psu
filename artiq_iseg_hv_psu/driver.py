@@ -120,6 +120,13 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
         temperature = self.send_command(":READ:MOD:TEMP?")
         return float(temperature.replace("C", ""))
 
+    async def ping(self):
+        idn = self.send_command("*IDN?")
+        if "iseg" in idn:
+            return True
+        else:
+            return False
+
     async def reset(self):
         return self.send_command("*RST")
 
