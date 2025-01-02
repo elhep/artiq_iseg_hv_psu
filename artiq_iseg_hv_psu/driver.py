@@ -88,22 +88,26 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
     async def get_channel_voltage(self, channel):
         if channel not in self.available_channels:
             raise ValueError("Channel out of range")
-        return self.send_command(f":READ:VOLT?(@{channel})")
+        voltage = self.send_command(f":READ:VOLT?(@{channel})")
+        return float(voltage.replace("V", ""))
 
     async def get_channel_current(self, channel):
         if channel not in self.available_channels:
             raise ValueError("Channel out of range")
-        return self.send_command(f":READ:CURR?(@{channel})")
+        current = self.send_command(f":READ:CURR?(@{channel})")
+        return float(current.replace("A", ""))
 
     async def get_channel_voltage_measured(self, channel):
         if channel not in self.available_channels:
             raise ValueError("Channel out of range")
-        return self.send_command(f":MEAS:VOLT?(@{channel})")
+        voltage = self.send_command(f":MEAS:VOLT?(@{channel})")
+        return float(voltage.replace("V", ""))
 
     async def get_channel_current_measured(self, channel):
         if channel not in self.available_channels:
             raise ValueError("Channel out of range")
-        return self.send_command(f":MEAS:CURR?(@{channel})")
+        current = self.send_command(f":MEAS:CURR?(@{channel})")
+        return float(current.replace("A", ""))
 
     async def get_channel_on(self, channel):
         if channel not in self.available_channels:
@@ -114,7 +118,7 @@ class ArtiqIsegHvPsu(ArtiqIsegHvPsuInterface):
 
     async def get_temperature(self):
         temperature = self.send_command(":READ:MOD:TEMP?")
-        return temperature
+        return float(temperature.replace("C", ""))
 
     async def reset(self):
         return self.send_command("*RST")
